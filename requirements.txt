@@ -1,0 +1,7 @@
+kagglehub==1.0.0
+pandas==3.0.2
+scikit-learn==1.8.0
+matplotlib==3.10.9
+kmodes==0.12.2
+skops==0.14.0
+seaborn==0.13.2
