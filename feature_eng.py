@@ -9,24 +9,26 @@ data = pd.read_csv('data/rfm_in/data.csv', index_col='customer_id') ## read data
 
 print(data.head(10))
 
-## prepare transformations
-time_tf = OneHotEncoder(drop='if_binary', ## drop 1 column if binary
-                        sparse_output=False, ## let the data dense for easier reading
-                        handle_unknown='ignore' ## set unknown category to all 0
-                        )
-mr_tf   = QuantileTransformer(output_distribution='normal', ## transform data to normal distribution
-                              random_state=300 ## enforce replication
-                              )
-fsc_tf  = PowerTransformer() ## method is yeo-johnson, for any real numbers
+trafo = PowerTransformer(method='box-cox') ## transformer object
+
+# ## prepare transformations
+# time_tf = OneHotEncoder(drop='if_binary', ## drop 1 column if binary
+#                         sparse_output=False, ## let the data dense for easier reading
+#                         handle_unknown='ignore' ## set unknown category to all 0
+#                         )
+# mr_tf   = QuantileTransformer(output_distribution='normal', ## transform data to normal distribution
+#                               random_state=300 ## enforce replication
+#                               )
+# fsc_tf  = PowerTransformer() ## method is yeo-johnson, for any real numbers
 
 ## unite all tarnsformer
 all_tf = ColumnTransformer(
     [
         # ('time_tf', time_tf, ['Weekend', 'Time']), ## Time related data transformed by OneHot
-        ('mr_tf', mr_tf, ['Monetary', 'Recency']), ## Monetary and Recency transformed using quantile
-        ('fsc_tf', fsc_tf, ['Frequency']) ## Frequency, Size, Custom by yeo-johnson
+        ('trafo', trafo, ['Recency', 'Monetary', 'Frequency']), ## Use tarfo object to transform RFM metrics
+        # ('fsc_tf', fsc_tf, ['Frequency']) ## Frequency, Size, Custom by yeo-johnson
     ],
-    remainder='drop', ## let non-transformed feature pass
+    remainder='drop', ## drop non-RFM metrics
     verbose_feature_names_out=False ## shorten feature name by removing transformer's name
 )
 
