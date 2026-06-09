@@ -16,5 +16,5 @@ Run the following codes in sequence.
 3. build_rfm_input.py: Compute RFM metrics for each customer.
 4. distribution_check.py: Plot RFM's historgram to select suitable preprocessing.
 5. feature_eng.py: Preprocess RFM metrics before fed into model.
-6. modelling.py: Perform Kmeans.
+6. modelling.py: Perform Kmeans with several number of clusters.
 7. analyze_cluster.py: Plot metrics' boxplot for each cluster.
