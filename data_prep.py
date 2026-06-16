@@ -21,14 +21,14 @@ data['is_weekend'] = data['day_of_week'].replace(kamus)
 ## extract date-time data on order_time, here we simply focus on hour
 data['order_hour'] = data['order_time'].dt.hour
 
-## translate hour data to morning, afternoon, evening, night
+# ## translate hour data to morning, afternoon, evening, night
 def time_seg(val):
     if val >= 5 and val < 12:
         return 'morning'
     if val >= 12 and val < 17:
         return 'afternoon'
-    if val >= 17 and val < 21:
-        return 'evening'
+    # if val >= 17 and val < 21:
+    #     return 'evening'
     else:
         return 'night'
 data['hour_segment'] = data['order_hour'].apply(time_seg)

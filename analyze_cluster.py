@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 sns.set_theme(style="whitegrid") ## set sns layout and styling
 
 ## read data for modelling and for rfm input
-data = pd.read_csv('data/modelling/data_pure_rfm.csv', index_col='customer_id') ## read data
+data = pd.read_csv('data/modelling/data.csv', index_col='customer_id') ## read data
 
 ## helper function for aggregated mode and ratio
 def get_mode(series):

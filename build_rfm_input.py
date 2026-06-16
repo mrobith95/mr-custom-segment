@@ -10,6 +10,9 @@ def get_mode(series):
 ## read data
 data = pd.read_csv('data/prep/data.csv', parse_dates=['order_time']) ## read data
 
+## sort the data so time-based aggregation can be applied
+data = data.sort_values('order_time')
+
 print(data.info())
 
 ## simulate the earliest day the data can be processed
@@ -37,9 +40,11 @@ rfm = (
             # region: favorite store region
             "region": get_mode,
             # age group: 
-            "customer_age_group": get_mode,
+            "customer_age_group": 'last',
             # gender
-            "customer_gender": get_mode,
+            "customer_gender": 'last', ## they might change their gender
+            # rewards member
+            "is_rewards_member": 'last',
             # Size: How many items customer tend to order each order
             "cart_size": 'median', ## good for determine typical behaviour
             # Custom Rate: Average of customization they order
@@ -68,6 +73,7 @@ rfm = (
             'store_location_type': 'Location',
             'customer_age_group': 'Age Group',
             'customer_gender': 'Gender',
+            'is_rewards_member': 'Reward Member',
             "cart_size": "Size",
             "num_customizations": "Custom Rate",
             'fulfillment_time_min': 'Waiting Time',
@@ -83,6 +89,7 @@ rfm = (
 rfm.sort_index(inplace=True)
 
 print(rfm.head(10))
+print(rfm.info())
 
 ## save data
 if not os.path.exists('data/rfm_in'):

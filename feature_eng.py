@@ -1,7 +1,8 @@
 import pandas as pd
 import os
-from sklearn.preprocessing import OneHotEncoder, QuantileTransformer, PowerTransformer
+from sklearn.preprocessing import PowerTransformer, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 import skops.io as sio
 
 ## read data
@@ -9,34 +10,61 @@ data = pd.read_csv('data/rfm_in/data.csv', index_col='customer_id') ## read data
 
 print(data.head(10))
 
-## prepare transformations
-time_tf = OneHotEncoder(drop='if_binary', ## drop 1 column if binary
-                        sparse_output=False, ## let the data dense for easier reading
-                        handle_unknown='ignore' ## set unknown category to all 0
-                        )
-mr_tf   = QuantileTransformer(output_distribution='normal', ## transform data to normal distribution
-                              random_state=300 ## enforce replication
-                              )
-fsc_tf  = PowerTransformer() ## method is yeo-johnson, for any real numbers
+## prepare transformations. no categoricals
+num_tf  = Pipeline(
+    [
+        ('yeo-johnson', PowerTransformer(standardize=True)), ## method is yeo-johnson, for any real numbers, no need to standardize
+    ]
+)
+
+ord_tf = Pipeline(
+    [
+        ## Ordinal transform first
+        ('ordinal', 
+         OrdinalEncoder(categories=[['18-24','25-34','35-44','45-54','55+']],
+                        handle_unknown='use_encoded_value', ## if unknown category is used ...
+                        unknown_value=-1, ## use -1
+                        encoded_missing_value=-1 ## NaN also use -1
+            )
+        )
+    ]
+)
+
 
 ## unite all tarnsformer
 all_tf = ColumnTransformer(
     [
-        # ('time_tf', time_tf, ['Weekend', 'Time']), ## Time related data transformed by OneHot
-        ('mr_tf', mr_tf, ['Monetary', 'Recency']), ## Monetary and Recency transformed using quantile
-        ('fsc_tf', fsc_tf, ['Frequency']) ## Frequency, Size, Custom by yeo-johnson
+        ## Numerical features are scaled by yeo-johson and scaled so max dist = 1
+        ('num_tf', num_tf, ['Recency','Frequency','Monetary','Size','Custom Rate','Waiting Time','Satisfaction']),
+        ## Ordinal
+        ('ord_tf', ord_tf, ['Age Group'])
     ],
-    remainder='drop', ## let non-transformed feature pass
+    remainder='passthrough', ## let non-transformed feature pass
     verbose_feature_names_out=False ## shorten feature name by removing transformer's name
 )
 
 all_tf.set_output(transform='pandas') ## transform function would return Dataframe
 
+# print(data.info())
 all_tf.fit(data) ## fit data
 data_tf = all_tf.transform(data) ## transform input data
 
+## make function that deal with ordinals
+def ordinal_filter(val, ref=0):
+    if val>ref:
+        return True
+    else:
+        return False
+    
+data_tf['Age Group>18-24'] = data_tf['Age Group'].apply(ordinal_filter, ref=0)
+data_tf['Age Group>25-34'] = data_tf['Age Group'].apply(ordinal_filter, ref=1)
+data_tf['Age Group>35-44'] = data_tf['Age Group'].apply(ordinal_filter, ref=2)
+data_tf['Age Group>44-54'] = data_tf['Age Group'].apply(ordinal_filter, ref=3)
+data_tf.drop(['Age Group'], axis=1, inplace=True)
+
+print(data_tf.info())
+
 print('===')
-print(data_tf.head(10))
 
 ## save data
 if not os.path.exists('data/feat_eng'):
