@@ -27,8 +27,8 @@ def time_seg(val):
         return 'morning'
     if val >= 12 and val < 17:
         return 'afternoon'
-    # if val >= 17 and val < 21:
-    #     return 'evening'
+    if val >= 17 and val < 21:
+        return 'evening'
     else:
         return 'night'
 data['hour_segment'] = data['order_hour'].apply(time_seg)

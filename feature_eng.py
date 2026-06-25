@@ -60,7 +60,18 @@ data_tf['Age Group>18-24'] = data_tf['Age Group'].apply(ordinal_filter, ref=0)
 data_tf['Age Group>25-34'] = data_tf['Age Group'].apply(ordinal_filter, ref=1)
 data_tf['Age Group>35-44'] = data_tf['Age Group'].apply(ordinal_filter, ref=2)
 data_tf['Age Group>44-54'] = data_tf['Age Group'].apply(ordinal_filter, ref=3)
-data_tf.drop(['Age Group'], axis=1, inplace=True)
+
+## make function that deal with cyclic categoricals
+def cyc_filter(val, refs):
+    if val in refs:
+        return True
+    else:
+        return False
+    
+data_tf['Time_0'] = data_tf['Time'].apply(cyc_filter, refs=['afternoon', 'evening'])
+data_tf['Time_1'] = data_tf['Time'].apply(cyc_filter, refs=['evening', 'night'])
+
+data_tf.drop(['Age Group', 'Time'], axis=1, inplace=True)
 
 print(data_tf.info())
 
