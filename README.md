@@ -20,4 +20,4 @@ Run the following codes in sequence.
 7. analyze_cluster.py: Plot metrics' boxplot for each cluster.
 
 ## Variation
-Visit [this repo's all_feat branch](https://github.com/mrobith95/mr-custom-segment/tree/all_feat) for implementation of Enchanced RFM Analysis for Customer Segmentation using K-Prototypes.
+Visit [all_feat branch](https://github.com/mrobith95/mr-custom-segment/tree/all_feat) for implementation of Enchanced RFM Analysis for Customer Segmentation using K-Prototypes.
