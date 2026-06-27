@@ -19,4 +19,4 @@ Run the following codes in sequence.
 6. analyze_cluster.py: Plot metrics' boxplot for each cluster.
 
 ## variation
-Visit the (main branch)[https://github.com/mrobith95/mr-custom-segment/tree/main] for classic RFM Analysis for Customer Segmentation using K-Means
+Visit the [main branch](https://github.com/mrobith95/mr-custom-segment/tree/main) for classic RFM Analysis for Customer Segmentation using K-Means
