@@ -17,3 +17,6 @@ Run the following codes in sequence.
 4. feature_eng.py: Preprocess RFM metrics, behaviour and personaility features before fed into model.
 5. modelling.py: Perform Kprototypes with several number of clusters.
 6. analyze_cluster.py: Plot metrics' boxplot for each cluster.
+
+## variation
+Visit the (main branch)[https://github.com/mrobith95/mr-custom-segment/tree/main] for classic RFM Analysis for Customer Segmentation using K-Means
