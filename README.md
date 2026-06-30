@@ -1,5 +1,5 @@
 # mr-custom-segment
-python scripts for my Medium Article on Customer Segmentation: [Enhanced RFM Analysis for Customer Segmentation using K-Prototypes]()
+python scripts for my Medium Article on Customer Segmentation: [Enhanced RFM Analysis for Customer Segmentation using K-Prototypes](https://medium.com/@mrobith95/enhanced-rfm-analysis-for-customer-segmentation-using-k-prototypes-c0e96df08557)
 
 ## Background
 In the [previous article](https://medium.com/@mrobith95/rfm-analysis-for-customer-segmentation-using-k-means-clustering-coffee-shop-case-study-7ed5a3dd654e), we performed basic RFM Analysis using K-Means. However, customer behaviour is not limited to spending activity alone. Adding this behaviour to our analysis would help us determine not only how customers behave in their spending but also their actual ordering behaviour. The main challenge of this analysis is that some customer behaviours are not numerical. Thus, K-Means that we use for basic RFM analysis can't work since it only accepts numerical values. This article will use K-Prototypes to solve this clustering problem.
